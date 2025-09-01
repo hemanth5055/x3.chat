@@ -23,3 +23,26 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+/* Minimal scrollbar with no track */
+.minimal-scrollbar::-webkit-scrollbar {
+  width: 7px; /* thin scrollbar */
+}
+
+.minimal-scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* hides track */
+}
+
+.minimal-scrollbar::-webkit-scrollbar-thumb {
+  background: #555; /* scrollbar color */
+  border-radius: 9999px; /* fully rounded */
+}
+
+.minimal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #777; /* slightly lighter on hover */
+}
+
+/* For Firefox */
+.minimal-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #555 transparent;
+}

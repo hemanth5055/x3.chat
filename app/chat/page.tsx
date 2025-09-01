@@ -1,10 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { Send, SidebarClose, SidebarOpen } from "lucide-react";
+import { ChatContext } from "../context/Chatcontext";
+import { div } from "motion/react-client";
 
 const page = () => {
-  const [showSideBar, setShowSideBar] = useState(false);
+  const { showSideBar, setShowSideBar } = useContext(ChatContext);
+  const [messages, setMessages] = useState([]);
   return (
     <div className="w-full h-screen flex gap-2 p-6">
       {showSideBar ? <Sidebar></Sidebar> : ""}
@@ -25,42 +28,46 @@ const page = () => {
         </div>
 
         {/* messages-hero */}
-        <div className="w-full h-full flex flex-col gap-4">
-          {/* welcome=msg */}
-          <div className="w-full flex flex-col items-center justify-center gap-1">
-            <div className="w-[80px] h-[80px] rounded-full bg-gradient-to-r from-green-500 to-blue-500"></div>
-            <h1 className="font-funnel text-[35px]">
-              Good Evening , Hemanth Reddy !
-            </h1>
-            <p className="font-mont text-[18px] font-semibold text-[#717171]">
-              Can I help you with anything ?
-            </p>
-          </div>
+        {messages.length == 0 ? (
+          <div className="w-full h-full flex flex-col gap-4">
+            {/* welcome=msg */}
+            <div className="w-full flex flex-col items-center justify-center gap-1">
+              <div className="w-[80px] h-[80px] rounded-full bg-gradient-to-r from-green-500 to-blue-500"></div>
+              <h1 className="font-funnel text-[35px]">
+                Good Evening , Hemanth Reddy !
+              </h1>
+              <p className="font-mont text-[18px] font-semibold text-[#717171]">
+                Can I help you with anything ?
+              </p>
+            </div>
 
-          {/* example- prompts */}
-          <div className="w-full flex flex-wrap  justify-evenly gap-y-4 pt-[20px]">
-            <div className="w-[300px] rounded-[15px] p-3  bg-[#F0F0F0] dark:bg-[#1D1D1D] flex items-center justify-center">
-              <p className="font-funnel font-medium text-center">
-                Explain quantum computing in simple terms.
-              </p>
-            </div>
-            <div className="w-[300px] rounded-[15px] p-3 bg-[#F0F0F0] dark:bg-[#1D1D1D] flex items-center justify-center">
-              <p className="font-funnel font-medium text-center">
-                Write a professional email asking for project updates.
-              </p>
-            </div>
-            <div className="w-[300px] rounded-[15px] p-3 bg-[#F0F0F0] dark:bg-[#1D1D1D] flex items-center justify-center">
-              <p className="font-funnel font-medium text-center">
-                Give me a 3-day workout plan for beginners.
-              </p>
-            </div>
-            <div className="w-[300px] rounded-[15px] p-3 bg-[#F0F0F0] dark:bg-[#1D1D1D] flex items-center justify-center">
-              <p className="font-funnel font-medium text-center">
-                Give me a 3-day workout plan for beginners.
-              </p>
+            {/* example- prompts */}
+            <div className="w-full flex flex-wrap  justify-evenly gap-y-4 pt-[20px]">
+              <div className="w-[300px] rounded-[15px] p-3  bg-[#F0F0F0] dark:bg-[#1D1D1D] flex items-center justify-center">
+                <p className="font-funnel font-medium text-center">
+                  Explain quantum computing in simple terms.
+                </p>
+              </div>
+              <div className="w-[300px] rounded-[15px] p-3 bg-[#F0F0F0] dark:bg-[#1D1D1D] flex items-center justify-center">
+                <p className="font-funnel font-medium text-center">
+                  Write a professional email asking for project updates.
+                </p>
+              </div>
+              <div className="w-[300px] rounded-[15px] p-3 bg-[#F0F0F0] dark:bg-[#1D1D1D] flex items-center justify-center">
+                <p className="font-funnel font-medium text-center">
+                  Give me a 3-day workout plan for beginners.
+                </p>
+              </div>
+              <div className="w-[300px] rounded-[15px] p-3 bg-[#F0F0F0] dark:bg-[#1D1D1D] flex items-center justify-center">
+                <p className="font-funnel font-medium text-center">
+                  Give me a 3-day workout plan for beginners.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="w-full h-full flex flex-col gap-4"></div>
+        )}
 
         <div className="w-[90%] flex relative h-[200px] bg-[#F0F0F0] dark:bg-[#1D1D1D] rounded-[20px]">
           <div className="w-[40px] h-[40px] rounded-full bottom-1 right-2 flex justify-center items-center absolute cursor-pointer">
