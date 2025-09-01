@@ -48,7 +48,7 @@ model Chat {
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   isBookmarked Boolean   @default(false)
   Message      Message[]
-
+  createdAt DateTime @default(now())
   @@index([userId])
 }
 
@@ -59,7 +59,7 @@ model Message {
   isBookmarked Boolean     @default(false)
   role         MessageRole
   content      String
-
+  createdAt DateTime @default(now())
   @@index([chatId])
 }
 
