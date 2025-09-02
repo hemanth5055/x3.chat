@@ -34,10 +34,26 @@ export async function POST(req: NextRequest) {
   }
 
   if (!chat) {
+    const chatNameResponse = await genai.models.generateContent({
+      model: modelName,
+      contents: `
+    Suggest a short name for this chat based on the first message: "${message}".
+    Requirements:
+    - Only return ONE  name.
+    - No markdown, no extra formatting, just plain text.
+  `,
+    });
+
+    // Gemini SDK returns a response object — extract text safely
+    let temp = "Untitled Chat";
+    if (chatNameResponse && chatNameResponse.text) {
+      temp = chatNameResponse.text;
+    }
+
     chat = await prisma.chat.create({
       data: {
         userId: session.user.id,
-        name: message.slice(0, 50) || "New Chat", // use message as title preview
+        name: temp,
       },
     });
   }
@@ -103,5 +119,6 @@ export async function POST(req: NextRequest) {
     success: true,
     chatId: chat.id, // ✅ return chatId
     message: messageToBeSent,
+    chat,
   });
 }

@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
       createdAt: true,
     },
     orderBy: {
-      createdAt: "desc",
+      createdAt: "asc",
     },
     take: 10,
   });
