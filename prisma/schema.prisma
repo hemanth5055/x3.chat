@@ -47,19 +47,21 @@ model Chat {
   userId       String
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   isBookmarked Boolean   @default(false)
+  name         String
   Message      Message[]
-  createdAt DateTime @default(now())
+  createdAt    DateTime  @default(now())
+
   @@index([userId])
 }
 
 model Message {
-  id           String      @id @default(cuid())
-  chatId       String
-  chat         Chat        @relation(fields: [chatId], references: [id], onDelete: Cascade)
-  isBookmarked Boolean     @default(false)
-  role         MessageRole
-  content      String
-  createdAt DateTime @default(now())
+  id        String      @id @default(cuid())
+  chatId    String
+  chat      Chat        @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  role      MessageRole
+  content   String
+  createdAt DateTime    @default(now())
+
   @@index([chatId])
 }
 

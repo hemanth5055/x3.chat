@@ -1,13 +1,41 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { Send, SidebarClose, SidebarOpen } from "lucide-react";
 import { ChatContext } from "../context/Chatcontext";
-import { div } from "motion/react-client";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import UserMessage from "../components/UserMessage";
+import Aireply from "../components/Aireply";
 
 const page = () => {
   const { showSideBar, setShowSideBar } = useContext(ChatContext);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<any>([]);
+  const [message, setMessage] = useState("");
+  const [chatId, setChatId] = useState(null);
+
+  const router = useRouter();
+  const handleSend = async () => {
+    if (message.length > 0) {
+      setMessages((prev: any) => [
+        ...prev,
+        {
+          id: Date.now(), // temporary unique id
+          role: "user",
+          content: message,
+        },
+      ]);
+      const result = await axios.post("/api/ask", { chatId: chatId, message });
+      console.log(result);
+      if (result) {
+        if (!chatId) {
+          setChatId(result.data.chatId);
+          window.history.replaceState(null, "", `/chat/${result.data.chatId}`);
+        }
+        setMessages((prev: any) => [...prev, result.data.message]);
+      }
+    }
+  };
   return (
     <div className="w-full h-screen flex gap-2 p-6">
       {showSideBar ? <Sidebar></Sidebar> : ""}
@@ -66,16 +94,31 @@ const page = () => {
             </div>
           </div>
         ) : (
-          <div className="w-full h-full flex flex-col gap-4"></div>
+          <div className="w-full h-full flex flex-col gap-4 overflow-y-scroll p-4 minimal-scrollbar items-center">
+            {messages.map((msg: any, i: number) => (
+              <div key={i} className="w-full flex flex-col gap-2 items-start">
+                {msg.role === "user" ? (
+                  <UserMessage message={msg.content} />
+                ) : (
+                  <Aireply message={msg.content} />
+                )}
+              </div>
+            ))}
+          </div>
         )}
 
         <div className="w-[90%] flex relative h-[200px] bg-[#F0F0F0] dark:bg-[#1D1D1D] rounded-[20px]">
-          <div className="w-[40px] h-[40px] rounded-full bottom-1 right-2 flex justify-center items-center absolute cursor-pointer">
+          <div
+            className="w-[40px] h-[40px] rounded-full bottom-1 right-2 flex justify-center items-center absolute cursor-pointer"
+            onClick={handleSend}
+          >
             <Send size={18}></Send>
           </div>
           <textarea
             name="message"
             id="message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             placeholder="How can X3 help you today ?"
             className="w-full h-full rounded-[20px] outline-none p-5 text-[20px] font-medium placeholder:text-[18px] font-funnel resize-none"
           ></textarea>
