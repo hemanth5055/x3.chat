@@ -1,5 +1,6 @@
-import { SidebarClose, SidebarOpen } from "lucide-react";
-import { useSession } from "next-auth/react";
+"use client";
+import { LogOut, SidebarClose, SidebarOpen } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 import React, { useContext } from "react";
 import { ChatContext } from "../context/Chatcontext";
@@ -19,13 +20,19 @@ const Navbar = () => {
           <SidebarOpen className="dark:text-gray-200 text-gray-800" />
         )}
       </div>
-      <div className="w-[40px] h-[40px] rounded-full relative overflow-hidden">
+      {/* <div className="w-[40px] h-[40px] rounded-full relative overflow-hidden">
         <Image
           src={session.data?.user.image || "/default-avatar.png"} // fallback image
           alt="User Avatar"
           fill
           className="object-cover"
         />
+      </div> */}
+      <div
+        className="w-[40px] h-[40px] flex justify-center items-center cursor-pointer"
+        onClick={() => signOut({ redirectTo: "/signin" })}
+      >
+        <LogOut></LogOut>
       </div>
     </div>
   );

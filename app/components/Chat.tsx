@@ -5,21 +5,16 @@ import {
   Loader2,
   Loader2Icon,
   Send,
-  SidebarClose,
-  SidebarOpen,
 } from "lucide-react";
 import Sidebar from "./Sidebar";
 import UserMessage from "./UserMessage";
 import Aireply from "./Aireply";
 import axios from "axios";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
 import Welcome from "./Welcome";
 import Navbar from "./Navbar";
 
 const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
   const { showSideBar, setShowSideBar, setChats } = useContext(ChatContext);
-  const session = useSession();
   const [chatId, setChatId] = useState<string | null>(initialChatId);
   const [messages, setMessages] = useState<any>([]);
   const [message, setMessage] = useState("");
