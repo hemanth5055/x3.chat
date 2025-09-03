@@ -49,6 +49,9 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #555 transparent;
 }
+.markdown-container{
+  overflow-x: scroll
+}
 .markdown-container h3 {
   @apply text-[30px] font-semibold font-[var(--font-funnel)];
 }
@@ -65,5 +68,5 @@ body {
   @apply bg-[#ededed] px-1.5 py-0.5 rounded-md dark:bg-[#232323];
 }
 .markdown-container pre div{
-  @apply rounded-[20px]
+  @apply rounded-[10px] 
 }

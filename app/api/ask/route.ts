@@ -32,12 +32,13 @@ export async function POST(req: NextRequest) {
       where: { id: chatId },
     });
   }
-
+  let newChat = false;
   if (!chat) {
+    newChat = true;
     const chatNameResponse = await genai.models.generateContent({
       model: modelName,
       contents: `
-    Suggest a short name for this chat based on the first message: "${message}".
+    Suggest a name for this chat based on the first message: "${message}".
     Requirements:
     - Only return ONE  name.
     - No markdown, no extra formatting, just plain text.
@@ -117,8 +118,9 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({
     success: true,
-    chatId: chat.id, // ✅ return chatId
+    chatId: chat.id,
     message: messageToBeSent,
     chat,
+    newChat,
   });
 }
