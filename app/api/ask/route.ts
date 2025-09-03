@@ -5,7 +5,7 @@ import { auth } from "@/auth";
 import { MessageRole } from "@prisma/client";
 
 const genai = new GoogleGenAI({ apiKey: process.env.GEMINI_API });
-const modelName = "gemini-1.5-flash";
+const modelName = "gemini-2.5-flash";
 
 export async function POST(req: NextRequest) {
   const { chatId, message } = await req.json();

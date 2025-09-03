@@ -28,7 +28,7 @@ const Sidebar = () => {
   }, []);
   return (
     <motion.div
-      className="w-[450px] bg-[#F0F0F0] dark:bg-[#151515] flex flex-col p-4 gap-2 rounded-3xl"
+      className="w-[400px] bg-[#F0F0F0] dark:bg-[#151515] flex flex-col p-4 gap-2 rounded-3xl"
       // initial={{ x: -300, opacity: 0 }} // Start hidden to the left
       // animate={{ x: 0, opacity: 1 }} // Slide in to place
       // transition={{ duration: 0.4, ease: "easeOut" }} // Smooth transition
@@ -36,7 +36,7 @@ const Sidebar = () => {
       {/* new-chat-button */}
       <div className="w-full flex justify-center py-2 items-center">
         <button
-          className="w-full h-[50px]  bg-[#dedede] dark:bg-[#292929] rounded-2xl cursor-pointer"
+          className="w-full h-[45px]  bg-[#dedede] dark:bg-[#292929] rounded-2xl cursor-pointer"
           onClick={() => router.push("/chat")}
         >
           <h4 className="font-funnel font-medium flex justify-center gap-2">

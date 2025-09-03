@@ -17,6 +17,9 @@
     --background: #000000;
     --foreground: #ededed;
   }
+  .markdown-container code {
+    background-color: rgb(30, 30, 30);
+  }
 }
 
 body {
@@ -45,4 +48,22 @@ body {
 .minimal-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: #555 transparent;
+}
+.markdown-container h3 {
+  @apply text-[30px] font-semibold font-[var(--font-funnel)];
+}
+
+.markdown-container hr {
+  @apply my-3 text-gray-500;
+}
+
+.markdown-container strong {
+  @apply text-lg;
+}
+
+.markdown-container code {
+  @apply bg-[#ededed] px-1.5 py-0.5 rounded-md dark:bg-[#232323];
+}
+.markdown-container pre div{
+  @apply rounded-[20px]
 }

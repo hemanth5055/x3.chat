@@ -138,21 +138,23 @@ const page = () => {
           </div>
         )}
 
-        <div className="w-[90%] flex relative h-[200px] bg-[#F0F0F0] dark:bg-[#1D1D1D] rounded-[20px]">
-          <div
-            className="w-[40px] h-[40px] rounded-full bottom-1 right-2 flex justify-center items-center absolute cursor-pointer"
-            onClick={handleSend}
-          >
-            <Send size={18}></Send>
-          </div>
+        <div className="w-[90%] flex relative h-[70px] bg-[#F0F0F0] dark:bg-[#1D1D1D] rounded-[20px]">
           <textarea
-            name="message"
-            id="message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="How can X3 help you today ?"
-            className="w-full h-full rounded-[20px] outline-none p-5 text-[20px] font-medium placeholder:text-[18px] font-funnel resize-none"
-          ></textarea>
+                     name="message"
+                     value={message}
+                     onChange={(e) => setMessage(e.target.value)}
+                     id="message"
+                     placeholder="How can X3 help you today ?"
+                     className="w-full h-full rounded-[20px] outline-none p-5 text-[20px] font-medium placeholder:text-[18px] font-funnel resize-none"
+                   ></textarea>
+                   <div className="w-[70px] h-full rounded-full  flex justify-center items-center cursor-pointer">
+                     <div
+                       className="w-[40px] h-[40px] flex justify-center items-center "
+                       onClick={handleSend}
+                     >
+                       <Send size={18}></Send>
+                     </div>
+                   </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,13 @@
 "use client";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ChatContext } from "../context/Chatcontext";
-import { Loader2Icon, Send, SidebarClose, SidebarOpen } from "lucide-react";
+import {
+  Loader2,
+  Loader2Icon,
+  Send,
+  SidebarClose,
+  SidebarOpen,
+} from "lucide-react";
 import Sidebar from "./Sidebar";
 import UserMessage from "./UserMessage";
 import Aireply from "./Aireply";
@@ -12,6 +18,7 @@ const Chat = ({ chatId }: { chatId: string }) => {
   const { showSideBar, setShowSideBar } = useContext(ChatContext);
   const [messages, setMessages] = useState<any>([]);
   const [message, setMessage] = useState("");
+  const [waitingReply, setWaitingReply] = useState(false);
   const endRef = useRef<HTMLDivElement | null>(null);
 
   const [loadingGlobal, setLoadingGlobal] = useState(true);
@@ -28,6 +35,7 @@ Do you want me to make them look more **minimal like placeholders** (e.g., “As
   const handleSend = async () => {
     if (message.length > 0) {
       setMessage("");
+      setWaitingReply(true);
       setMessages((prev: any) => [
         ...prev,
         {
@@ -41,6 +49,7 @@ Do you want me to make them look more **minimal like placeholders** (e.g., “As
       if (result) {
         setMessages((prev: any) => [...prev, result.data.message]);
       }
+      setWaitingReply(false);
     }
   };
   useEffect(() => {
@@ -95,17 +104,18 @@ Do you want me to make them look more **minimal like placeholders** (e.g., “As
                 )}
               </div>
             ))}
+            {waitingReply ? (
+              <div className="w-[90%] flex items-center justify-start">
+                <Loader2 className="animate-spin"></Loader2>
+              </div>
+            ) : (
+              ""
+            )}
             <div className="" ref={endRef}></div>
           </div>
         )}
 
-        <div className="w-[90%] flex relative h-[200px] bg-[#F0F0F0] dark:bg-[#1D1D1D] rounded-[20px]">
-          <div
-            className="w-[40px] h-[40px] rounded-full bottom-1 right-2 flex justify-center items-center absolute cursor-pointer"
-            onClick={handleSend}
-          >
-            <Send size={18}></Send>
-          </div>
+        <div className="w-[90%] flex relative h-[70px] bg-[#F0F0F0] dark:bg-[#1D1D1D] rounded-full">
           <textarea
             name="message"
             value={message}
@@ -114,6 +124,14 @@ Do you want me to make them look more **minimal like placeholders** (e.g., “As
             placeholder="How can X3 help you today ?"
             className="w-full h-full rounded-[20px] outline-none p-5 text-[20px] font-medium placeholder:text-[18px] font-funnel resize-none"
           ></textarea>
+          <div className="w-[70px] h-full rounded-full  flex justify-center items-center cursor-pointer">
+            <div
+              className="w-[40px] h-[40px] flex justify-center items-center "
+              onClick={handleSend}
+            >
+              <Send size={18}></Send>
+            </div>
+          </div>
         </div>
       </div>
     </div>
