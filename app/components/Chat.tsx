@@ -1,11 +1,7 @@
 "use client";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ChatContext } from "../context/Chatcontext";
-import {
-  Loader2,
-  Loader2Icon,
-  Send,
-} from "lucide-react";
+import { Loader2, Loader2Icon, Send } from "lucide-react";
 import Sidebar from "./Sidebar";
 import UserMessage from "./UserMessage";
 import Aireply from "./Aireply";
@@ -36,17 +32,27 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
     setWaitingReply(true);
 
     try {
-      const result = await axios.post("/api/ask", { chatId, message });
+      let currentChatId = chatId;
+
+      if (currentChatId === null) {
+        const createNewChat = await axios.post("/api/create-chat", { message });
+
+        if (createNewChat?.data?.chat) {
+          currentChatId = createNewChat.data.chat.id;
+          setChatId(currentChatId);
+          setChats((prev) => [createNewChat.data.chat, ...prev]);
+          window.history.replaceState(null, "", `/chat/${currentChatId}`);
+        }
+      }
+
+      const result = await axios.post("/api/ask", {
+        chatId: currentChatId,
+        message,
+      });
+      console.log(result);
 
       if (result?.data) {
         setMessages((prev: any) => [...prev, result.data.message]);
-
-        if (result.data.newChat) {
-          // ✅ Update local chatId + URL + sidebar
-          setChatId(result.data.chatId);
-          setChats((prev) => [result.data.chat, ...prev]);
-          window.history.replaceState(null, "", `/chat/${result.data.chatId}`);
-        }
       }
     } catch (err) {
       console.error("Error sending message:", err);
@@ -73,7 +79,7 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
       }
     };
     fetchMessages();
-  }, [chatId]);
+  }, [initialChatId]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
