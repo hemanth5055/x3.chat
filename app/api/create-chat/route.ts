@@ -25,6 +25,7 @@ export async function POST(req: NextRequest) {
       Suggest a name for this chat based on the first message: "${message}".
       Requirements:
       - Only return ONE  name.
+      - Use Space between words if there are multiple words
       - No markdown, no extra formatting, just plain text.
     `,
     });
