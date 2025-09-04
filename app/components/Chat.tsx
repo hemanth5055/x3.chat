@@ -19,8 +19,7 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
   const [loadingGlobal, setLoadingGlobal] = useState(true);
   const endRef = useRef<HTMLDivElement | null>(null);
   const session = useSession();
- const [credits, setCredits] = useState(session?.data?.user?.credits ?? 0);
-
+  const [credits, setCredits] = useState(0);
 
   // const handleSend = async () => {
   //   if (!message.trim()) return;
@@ -160,13 +159,25 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
     };
     fetchMessages();
   }, [initialChatId]);
+  
+  useEffect(() => {
+    const fetchCredits = async () => {
+      try {
+        const res = await axios.get("/api/get-credits");
+        setCredits(res.data.credits);
+      } catch (err) {
+        console.error("Error fetching credits:", err);
+      }
+    };
 
+    fetchCredits();
+  }, []);
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   return (
-    <div className="w-full h-screen flex gap-2 p-6">
+    <div className="w-full h-screen flex gap-2 p-6 max-sm:p-2">
       {showSideBar && <Sidebar />}
       <div className="w-full flex flex-col items-center overflow-x-hidden">
         {/* Navbar */}
@@ -174,7 +185,7 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
         {/* Messages Section */}
         {loadingGlobal ? (
           <div className="flex-1 flex items-center justify-center">
-            <Loader2Icon className="animate-spin" />
+            <Loader2Icon className="animate-spin  text-blue-500" />
           </div>
         ) : messages.length === 0 ? (
           // Empty state / welcome
@@ -192,7 +203,7 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
             ))}
             {waitingReply && (
               <div className="w-[90%] flex items-center justify-start">
-                <Loader2 className="animate-spin" />
+                <Loader2Icon className="animate-spin  text-blue-500" />
               </div>
             )}
             <div ref={endRef}></div>

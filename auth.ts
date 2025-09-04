@@ -9,14 +9,13 @@ declare module "next-auth" {
       id: string;
       name?: string | null;
       email?: string | null;
-      credits?: number | null;
       image?: string | null;
     } & DefaultSession["user"];
   }
 
   interface User {
     id: string;
-    credits?: number | null;
+    name?: string | null;
     image?: string | null;
   }
 
@@ -24,7 +23,6 @@ declare module "next-auth" {
     id: string;
     name?: string | null;
     email?: string | null;
-    credits?: number | null;
     image?: string | null;
   }
 }
@@ -41,7 +39,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.id = user.id;
         token.name = user.name;
         token.email = user.email;
-        token.credits = user.credits;
         token.image = user.image;
       }
       return token;
@@ -51,7 +48,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.id = token.id as string;
         session.user.name = token.name ?? null;
         session.user.email = (token.email as string) ?? null;
-        session.user.credits = (token.credits as number) ?? null;
         session.user.image = (token.image as string) ?? null;
       }
       return session;

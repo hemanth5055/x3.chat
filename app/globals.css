@@ -63,7 +63,7 @@ body {
 
 
 .markdown-container h3 {
-  @apply text-[30px] font-semibold font-[var(--font-funnel)] leading-tight py-2;
+  @apply text-[30px] font-semibold font-[var(--font-funnel)] leading-tight py-3;
 }
 
 .markdown-container hr {
