@@ -38,7 +38,7 @@ const Sidebar = () => {
   }, [userId, setChats]);
   return (
     <motion.div
-      className="w-[420px] max-sm:w-full bg-[#f6f6f6] dark:bg-[#151515] flex flex-col p-4 gap-2 max-sm:absolute max-sm:z-1 "
+      className="w-[420px] max-sm:w-full max-sm:h-screen bg-[#f6f6f6] dark:bg-[#151515] flex flex-col p-4 gap-2 max-sm:absolute max-sm:z-1 "
       // initial={{ x: -300, opacity: 0 }} // Start hidden to the left
       // animate={{ x: 0, opacity: 1 }} // Slide in to place
       // transition={{ duration: 0.4, ease: "easeOut" }} // Smooth transition
