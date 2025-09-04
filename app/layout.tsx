@@ -16,7 +16,7 @@ const funnel = Funnel_Display({
 });
 
 export const metadata: Metadata = {
-  title: "X3",
+  title: "X3.Chat",
   description:
     "X3 is a minimal AI chat platform — ask anything, get answers in seconds.",
 };

@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# X3.Chat — AI-Powered Streaming Chat App
 
-## Getting Started
+X3 Chat is a modern AI-powered chat application built with **Next.js 15 (App Router)**, **Prisma**, **NextAuth**, and **Google Gemini API**.
+It supports **real-time streaming responses**, **user authentication**, and a **credit-based usage system**.
 
-First, run the development server:
+
+## 🚀 Features
+
+* 🔑 **Authentication** (via NextAuth)
+* 🗂️ **Multiple chat sessions** per user
+* 💰 **Credits system** – each AI request deducts a credit
+* 💾 **Persistent chat history** with Prisma & PostgreSQL
+* ⚡ **Real-time streaming AI replies** (chunked with SSE)
+* 🌙 **Dark mode support**
+* 🎨 **Markdown + Syntax highlighting** for AI responses
+* 📱 **Responsive UI** with TailwindCSS
+
+
+## 🖼️ Screenshots
+
+### Home Page
+<img src="public/home.png" alt="Home" style="width:600px; border-radius:5px;" />
+
+### Chat Page
+<img src="public/chat.png" alt="Chat" style="width:600px; border-radius:5px;" />
+
+
+---
+
+## 🛠️ Tech Stack
+
+* **Frontend**: Next.js 15 (App Router), TailwindCSS
+* **Backend**: Next.js API routes
+* **Database**: PostgreSQL + Prisma ORM
+* **Auth**: NextAuth.js
+* **AI**: Google Gemini (`@google/genai`)
+* **Deployment**: Vercel
+
+---
+
+## ⚙️ Installation
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/your-username/x3-chat.git
+cd x3-chat
+```
+
+### 2️⃣ Install dependencies
+
+```bash
+npm install
+```
+
+### 3️⃣ Setup environment variables
+
+Create a `.env` file in the root:
+
+```env
+DATABASE_URL=postgresql://USER:PASSWORD@localhost:5432/x3chat
+NEXTAUTH_SECRET=your-secret-key
+NEXTAUTH_URL=http://localhost:3000
+GEMINI_API=your-google-gemini-api-key
+```
+
+### 4️⃣ Setup Prisma
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+### 5️⃣ Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit 👉 [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📡 API Overview
 
-## Learn More
+### **POST /api/ask-stream**
 
-To learn more about Next.js, take a look at the following resources:
+Streams AI responses chunk by chunk.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Request Body:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```json
+{
+  "chatId": "clxyz123",
+  "message": "Explain quantum computing simply."
+}
+```
 
-## Deploy on Vercel
+**Streamed Response (SSE):**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```json
+{ "type": "chunk", "text": "Quantum computing is..." }
+{ "type": "chunk", "text": " unlike classical..." }
+{ "type": "done", "message": { ... }, "creditsLeft": 4 }
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---

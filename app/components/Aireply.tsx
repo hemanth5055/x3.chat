@@ -5,10 +5,9 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 // import { prism-light } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { useTheme } from "next-themes";
 
 const Aireply = ({ message }: { message: string }) => {
-  const { theme } = useTheme();
+
 
   return (
     <div className="w-[90%] flex rounded-[20px]  justify-start items-center">

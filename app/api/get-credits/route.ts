@@ -24,7 +24,7 @@ export async function GET() {
     }
 
     return NextResponse.json({ success: true, credits: user.credits });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       { success: false, error: "Failed to fetch credits" },
       { status: 500 }
