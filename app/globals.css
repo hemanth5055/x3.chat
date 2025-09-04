@@ -53,7 +53,7 @@ body {
   overflow-x: scroll
 }
 .markdown-container h3 {
-  @apply text-[30px] font-semibold font-[var(--font-funnel)];
+  @apply text-[30px] font-semibold font-[var(--font-funnel)] leading-tight py-2;
 }
 
 .markdown-container hr {

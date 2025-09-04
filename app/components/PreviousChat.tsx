@@ -10,8 +10,8 @@ const PreviousChat = ({ name, id }: { name: string; id: string }) => {
       onClick={() => router.push(`/chat/${id}`)}
     >
       <p className="font-funnel font-medium text-[18px]">
-        {name.slice(0, 20)}
-        {name.length > 20 ? ".." : ""}
+        {name.slice(0, 23)}
+        {name.length > 23 ? ".." : ""}
       </p>
     </div>
   );
