@@ -28,23 +28,26 @@ body {
 }
 /* Minimal scrollbar with no track */
 /* Always visible thin scrollbar */
-.minimal-scrollbar {
-  scrollbar-width: thin;                /* Firefox */
-  scrollbar-color: #555 transparent;    /* default light */
-}
 .minimal-scrollbar::-webkit-scrollbar {
   width: 7px; 
   height: 7px;
 }
+
 .minimal-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .minimal-scrollbar::-webkit-scrollbar-thumb {
   background: #555; 
   border-radius: 9999px;
 }
+
 .minimal-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #777;
+}
+
+.minimal-scrollbar::-webkit-scrollbar-button {
+  display: none;
 }
 
 /* Dark mode */
