@@ -51,16 +51,12 @@ const Sidebar = () => {
         </h2>
       </div>
 
-      <div className="w-full flex flex-col gap-3 justify-center items-center">
-        {chats.length == 0 && loading ? (
-          <Loader2Icon className="animate-spin"></Loader2Icon>
+      <div className="w-full flex flex-col gap-3 justify-start items-center minimal-scrollbar  overflow-y-scroll py-2">
+        {chats.length === 0 && loading ? (
+          <Loader2Icon className="animate-spin" />
         ) : (
           chats.map((chat) => (
-            <PreviousChat
-              name={chat.name}
-              key={chat.id}
-              id={chat.id}
-            ></PreviousChat>
+            <PreviousChat name={chat.name} key={chat.id} id={chat.id} />
           ))
         )}
       </div>

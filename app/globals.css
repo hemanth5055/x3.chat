@@ -27,31 +27,41 @@ body {
   color: var(--foreground);
 }
 /* Minimal scrollbar with no track */
-.minimal-scrollbar::-webkit-scrollbar {
-  width: 7px; /* thin scrollbar */
-}
-
-.minimal-scrollbar::-webkit-scrollbar-track {
-  background: transparent; /* hides track */
-}
-
-.minimal-scrollbar::-webkit-scrollbar-thumb {
-  background: #555; /* scrollbar color */
-  border-radius: 9999px; /* fully rounded */
-}
-
-.minimal-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #777; /* slightly lighter on hover */
-}
-
-/* For Firefox */
+/* Always visible thin scrollbar */
 .minimal-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #555 transparent;
+  scrollbar-width: thin;                /* Firefox */
+  scrollbar-color: #555 transparent;    /* default light */
 }
-.markdown-container{
-  overflow-x: scroll
+.minimal-scrollbar::-webkit-scrollbar {
+  width: 7px; 
+  height: 7px;
 }
+.minimal-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.minimal-scrollbar::-webkit-scrollbar-thumb {
+  background: #555; 
+  border-radius: 9999px;
+}
+.minimal-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .minimal-scrollbar {
+    scrollbar-color: #999 transparent; 
+  }
+  .minimal-scrollbar::-webkit-scrollbar-thumb {
+    background: #999;
+  }
+  .minimal-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+  }
+}
+
+
+
 .markdown-container h3 {
   @apply text-[30px] font-semibold font-[var(--font-funnel)] leading-tight py-2;
 }

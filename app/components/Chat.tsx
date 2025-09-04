@@ -8,6 +8,7 @@ import Aireply from "./Aireply";
 import axios from "axios";
 import Welcome from "./Welcome";
 import Navbar from "./Navbar";
+import { useSession } from "next-auth/react";
 
 const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
   const { showSideBar, setShowSideBar, setChats } = useContext(ChatContext);
@@ -17,7 +18,52 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
   const [waitingReply, setWaitingReply] = useState(false);
   const [loadingGlobal, setLoadingGlobal] = useState(true);
   const endRef = useRef<HTMLDivElement | null>(null);
+  const session = useSession();
+ const [credits, setCredits] = useState(session?.data?.user?.credits ?? 0);
 
+
+  // const handleSend = async () => {
+  //   if (!message.trim()) return;
+
+  // const userMessage = {
+  //   id: Date.now(),
+  //   role: "USER",
+  //   content: message,
+  // };
+
+  // setMessages((prev: any) => [...prev, userMessage]);
+  // setMessage("");
+  // setWaitingReply(true);
+
+  //   try {
+  //     let currentChatId = chatId;
+
+  //     if (currentChatId === null) {
+  //       const createNewChat = await axios.post("/api/create-chat", { message });
+
+  //       if (createNewChat?.data?.chat) {
+  //         currentChatId = createNewChat.data.chat.id;
+  //         setChatId(currentChatId);
+  //         setChats((prev) => [createNewChat.data.chat, ...prev]);
+  //         window.history.replaceState(null, "", `/chat/${currentChatId}`);
+  //       }
+  //     }
+
+  //     const result = await axios.post("/api/ask", {
+  //       chatId: currentChatId,
+  //       message,
+  //     });
+  //     console.log(result);
+
+  //     if (result?.data) {
+  //       setMessages((prev: any) => [...prev, result.data.message]);
+  //     }
+  //   } catch (err) {
+  //     console.error("Error sending message:", err);
+  //   } finally {
+  //     setWaitingReply(false);
+  //   }
+  // };
   const handleSend = async () => {
     if (!message.trim()) return;
 
@@ -33,7 +79,6 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
 
     try {
       let currentChatId = chatId;
-
       if (currentChatId === null) {
         const createNewChat = await axios.post("/api/create-chat", { message });
 
@@ -44,15 +89,50 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
           window.history.replaceState(null, "", `/chat/${currentChatId}`);
         }
       }
-
-      const result = await axios.post("/api/ask", {
-        chatId: currentChatId,
-        message,
+      const aiMessageId = `ai-${Date.now()}-${Math.floor(
+        Math.random() * 10000
+      )}`;
+      const res = await fetch("/api/ask-stream", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chatId: currentChatId, message }),
       });
-      console.log(result);
 
-      if (result?.data) {
-        setMessages((prev: any) => [...prev, result.data.message]);
+      if (!res || !res.body) return;
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+
+      // Placeholder AI message
+      setMessages((prev: any) => [
+        ...prev,
+        { id: aiMessageId, role: "AI", content: "" },
+      ]);
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        if (!waitingReply) setWaitingReply(false);
+
+        // multiple JSON objects may come in a single chunk
+        const lines = chunk.trim().split("\n");
+        for (const line of lines) {
+          if (!line) continue;
+          const temp = JSON.parse(line);
+
+          if (temp.type === "chunk") {
+            setMessages((prev: any) =>
+              prev.map((msg: any) =>
+                msg.id === aiMessageId
+                  ? { ...msg, content: msg.content + temp.text }
+                  : msg
+              )
+            );
+          } else {
+            setCredits(temp.creditsLeft);
+          }
+        }
       }
     } catch (err) {
       console.error("Error sending message:", err);
@@ -90,7 +170,7 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
       {showSideBar && <Sidebar />}
       <div className="w-full flex flex-col items-center overflow-x-hidden">
         {/* Navbar */}
-        <Navbar></Navbar>
+        <Navbar credits={credits ? credits : 0}></Navbar>
         {/* Messages Section */}
         {loadingGlobal ? (
           <div className="flex-1 flex items-center justify-center">
