@@ -9,6 +9,7 @@ import axios from "axios";
 import Welcome from "./Welcome";
 import Navbar from "./Navbar";
 import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
   const { showSideBar, setShowSideBar, setChats } = useContext(ChatContext);
@@ -65,7 +66,10 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
   // };
   const handleSend = async () => {
     if (!message.trim()) return;
-
+    if (credits <= 0) {
+      toast.error("Out Of Credits");
+      return;
+    }
     const userMessage = {
       id: Date.now(),
       role: "USER",
@@ -86,6 +90,7 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
           setChatId(currentChatId);
           setChats((prev) => [createNewChat.data.chat, ...prev]);
           window.history.replaceState(null, "", `/chat/${currentChatId}`);
+          toast.success("Chat Created Sucessfully.");
         }
       }
       const aiMessageId = `ai-${Date.now()}-${Math.floor(
@@ -135,6 +140,7 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
       }
     } catch (err) {
       console.error("Error sending message:", err);
+      toast.error("Please try again later.");
     } finally {
       setWaitingReply(false);
     }
@@ -159,7 +165,7 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
     };
     fetchMessages();
   }, [initialChatId]);
-  
+
   useEffect(() => {
     const fetchCredits = async () => {
       try {
@@ -219,7 +225,7 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 if (message.length > 0) {
-                  handleSend(); // call your send function
+                  handleSend(); 
                 }
               }
             }}

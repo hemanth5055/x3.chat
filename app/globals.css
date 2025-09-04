@@ -83,3 +83,8 @@ body {
 .markdown-container pre div{
   @apply rounded-[10px] 
 }
+
+.toast-container{
+  font-family: var(--font-mont);
+  font-weight: 600;
+}
