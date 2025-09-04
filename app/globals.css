@@ -60,7 +60,10 @@ body {
   }
 }
 
-
+.markdown-container::selection {
+  background-color: rgb(255, 226, 157);
+  color: black
+}
 
 .markdown-container h3 {
   @apply text-[30px] font-semibold font-[var(--font-funnel)] leading-tight py-3;

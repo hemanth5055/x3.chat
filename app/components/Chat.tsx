@@ -1,7 +1,7 @@
 "use client";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ChatContext } from "../context/Chatcontext";
-import { Loader2, Loader2Icon, Send } from "lucide-react";
+import { Loader2Icon, Send } from "lucide-react";
 import Sidebar from "./Sidebar";
 import UserMessage from "./UserMessage";
 import Aireply from "./Aireply";
@@ -177,9 +177,9 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
   }, [messages]);
 
   return (
-    <div className="w-full h-screen flex gap-2 p-6 max-sm:p-2">
+    <div className="w-full h-screen flex gap-2 ">
       {showSideBar && <Sidebar />}
-      <div className="w-full flex flex-col items-center overflow-x-hidden">
+      <div className="w-full flex flex-col items-center overflow-x-hidden p-4">
         {/* Navbar */}
         <Navbar credits={credits ? credits : 0}></Navbar>
         {/* Messages Section */}
@@ -191,7 +191,7 @@ const Chat = ({ chatId: initialChatId }: { chatId: string | null }) => {
           // Empty state / welcome
           <Welcome></Welcome>
         ) : (
-          <div className="flex-1 w-full flex flex-col gap-4 items-center overflow-y-scroll p-4 minimal-scrollbar max-sm:p-1">
+          <div className="flex-1 w-full flex flex-col gap-4 items-center overflow-y-scroll p-2 minimal-scrollbar max-sm:p-1">
             {messages.map((msg: any, i: number) => (
               <div key={i} className="w-full flex flex-col gap-2 items-center">
                 {msg.role === "USER" ? (

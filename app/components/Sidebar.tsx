@@ -28,7 +28,7 @@ const Sidebar = () => {
   }, []);
   return (
     <motion.div
-      className="w-[400px] bg-[#F0F0F0] dark:bg-[#151515] flex flex-col p-4 gap-2 rounded-3xl"
+      className="w-[420px] bg-[#F0F0F0] dark:bg-[#151515] flex flex-col p-4 gap-2 "
       // initial={{ x: -300, opacity: 0 }} // Start hidden to the left
       // animate={{ x: 0, opacity: 1 }} // Slide in to place
       // transition={{ duration: 0.4, ease: "easeOut" }} // Smooth transition
